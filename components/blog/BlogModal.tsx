@@ -97,7 +97,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) =
       />
       
       {/* Modal Content */}
-      <div className="relative w-full h-full max-w-4xl mx-4 my-8 bg-[#0A0A0B] rounded-2xl border border-gray-700/50 overflow-hidden">
+      <div className="relative w-full h-[90vh] max-w-4xl mx-4 my-8 bg-[#0A0A0B] rounded-2xl border border-gray-700/50 overflow-hidden">
         
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 bg-[#0A0A0B]/95 backdrop-blur-sm border-b border-gray-700/50">
@@ -130,7 +130,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) =
         </div>
 
         {/* Content */}
-        <div className="h-full overflow-y-auto">
+        <div className="h-[calc(90vh-80px)] overflow-y-auto">
           <div className="p-8">
             
             {/* Article Header */}
@@ -201,13 +201,13 @@ export const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) =
             </div>
 
             {/* Share Section */}
-            <div className="border-t border-gray-700/50 pt-8">
+            <div className="border-t border-gray-700/50 pt-8 mb-8">
               <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
                 <Share2 className="w-5 h-5" />
                 <span>Partager cet article</span>
               </h3>
               
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 pb-4">
                 <button
                   onClick={() => handleShare('facebook')}
                   className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
@@ -240,6 +240,9 @@ export const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) =
                   <span>Copier le lien</span>
                 </button>
               </div>
+              
+              {/* Espacement supplémentaire pour s'assurer que tout est visible */}
+              <div className="h-4"></div>
             </div>
           </div>
         </div>
