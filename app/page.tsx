@@ -13,6 +13,7 @@ import Footer from '@/components/Footer';
 import Chatbot from '@/components/Chatbot';
 import ScrollIndicator from '@/components/ScrollIndicator';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
+import EcoBadge from '@/components/EcoBadge';
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,6 +41,7 @@ export default function Home() {
       
       <Footer />
       <Chatbot />
+      <EcoBadge />
     </div>
   );
 }

@@ -10,12 +10,16 @@ import {
   ArrowRight,
   Calendar,
   Award,
-  TrendingUp
+  TrendingUp,
+  FileText,
+  Eye
 } from 'lucide-react';
+import ProjectModal from './projects/ProjectModal';
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,7 +51,9 @@ const Projects = () => {
         "Réservations en temps réel",
         "Paiements sécurisés",
         "Dashboard analytics",
-        "API mobile-first"
+        "API mobile-first",
+        "Notifications automatiques",
+        "Gestion multi-hôtels"
       ],
       results: "+40% de réservations directes",
       duration: "3 mois",
@@ -55,7 +61,36 @@ const Projects = () => {
       type: "Web App",
       githubUrl: "https://github.com",
       liveUrl: "https://demo.com",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
+      client: {
+        name: "Marie Dubois",
+        company: "Hôtel Le Moderne",
+        testimonial: "Grâce à cette solution, notre taux de réservations directes a augmenté de 40% et nous avons réduit nos commissions OTA de manière significative.",
+        rating: 5
+      },
+      caseStudy: {
+        challenge: "L'hôtel Le Moderne faisait face à une forte dépendance aux plateformes de réservation tierces (Booking.com, Expedia) qui prélevaient des commissions importantes (15-20%). Le système de réservation existant était obsolète et ne permettait pas de gérer efficacement les disponibilités en temps réel, causant des surbookings fréquents.",
+        solution: "Développement d'une plateforme de réservation moderne avec un moteur de disponibilités en temps réel, intégration de paiements sécurisés, et un système de gestion centralisé. L'accent a été mis sur l'expérience utilisateur pour encourager les réservations directes.",
+        implementation: "Utilisation de Next.js pour une interface rapide et SEO-friendly, Node.js avec Redis pour la gestion temps réel des disponibilités, PostgreSQL pour les données persistantes, et Stripe pour les paiements sécurisés. Mise en place d'un système de notifications automatiques et d'un dashboard analytics complet.",
+        results: [
+          "Augmentation de 40% des réservations directes",
+          "Réduction de 60% des commissions OTA",
+          "Élimination complète des surbookings",
+          "Amélioration de 35% de la satisfaction client",
+          "ROI de 300% en 6 mois"
+        ],
+        metrics: [
+          { name: "Réservations directes", value: "+40%", description: "Augmentation vs année précédente" },
+          { name: "Temps de réservation", value: "2 min", description: "Moyenne par réservation" },
+          { name: "Taux de conversion", value: "12%", description: "Visiteurs → Réservations" }
+        ],
+        lessons: [
+          "L'importance d'une UX fluide pour réduire l'abandon de panier dans l'hôtellerie",
+          "La gestion temps réel des disponibilités est cruciale pour éviter les surbookings",
+          "Les notifications automatiques améliorent significativement l'expérience client",
+          "Un bon SEO peut réduire la dépendance aux OTA"
+        ]
+      }
     },
     {
       id: 2,
@@ -68,7 +103,9 @@ const Projects = () => {
         "Gestion des annonces",
         "Visites virtuelles",
         "CRM avancé",
-        "Reporting automatique"
+        "Reporting automatique",
+        "Prospection automatisée",
+        "Intégration MLS"
       ],
       results: "+65% de productivité",
       duration: "4 mois",
@@ -76,7 +113,36 @@ const Projects = () => {
       type: "SaaS Platform",
       githubUrl: "https://github.com",
       liveUrl: "https://demo.com",
-      color: "from-purple-500 to-violet-500"
+      color: "from-purple-500 to-violet-500",
+      client: {
+        name: "Jean-Pierre Martin",
+        company: "Century 21 Prestige",
+        testimonial: "Cette plateforme a révolutionné notre façon de travailler. Nous avons doublé notre productivité et nos clients adorent les visites virtuelles.",
+        rating: 5
+      },
+      caseStudy: {
+        challenge: "L'agence Century 21 Prestige utilisait plusieurs outils disparates pour gérer ses annonces, ses clients et ses visites. Cette fragmentation causait des pertes de temps importantes, des doublons dans les données, et une expérience client dégradée. Les agents passaient plus de temps en administration qu'en prospection.",
+        solution: "Création d'une plateforme CRM unifiée intégrant la gestion d'annonces, les visites virtuelles WebRTC, la prospection automatisée, et les rapports en temps réel. Intégration avec les systèmes MLS existants pour synchroniser automatiquement les données.",
+        implementation: "Frontend React pour une interface moderne et responsive, backend Python avec FastAPI pour les performances, MongoDB pour la flexibilité des données immobilières, AWS pour l'infrastructure cloud, et WebRTC pour les visites virtuelles haute qualité.",
+        results: [
+          "Augmentation de 65% de la productivité des agents",
+          "Réduction de 50% du temps administratif",
+          "Augmentation de 80% des visites virtuelles",
+          "Amélioration de 45% de la satisfaction client",
+          "Croissance de 30% du chiffre d'affaires"
+        ],
+        metrics: [
+          { name: "Productivité agents", value: "+65%", description: "Gain de temps quotidien" },
+          { name: "Visites virtuelles", value: "200+", description: "Par mois en moyenne" },
+          { name: "Temps de réponse", value: "< 2h", description: "Réponse aux prospects" }
+        ],
+        lessons: [
+          "L'unification des outils métier génère des gains de productivité exponentiels",
+          "Les visites virtuelles sont devenues indispensables dans l'immobilier moderne",
+          "L'automatisation de la prospection libère du temps pour la relation client",
+          "L'intégration MLS évite la ressaisie et les erreurs"
+        ]
+      }
     },
     {
       id: 3,
@@ -89,7 +155,9 @@ const Projects = () => {
         "Recommandations IA",
         "Paiements multiples",
         "Logistique optimisée",
-        "App mobile native"
+        "App mobile native",
+        "Calcul empreinte carbone",
+        "Programme de fidélité vert"
       ],
       results: "+120% de conversion",
       duration: "5 mois",
@@ -97,7 +165,36 @@ const Projects = () => {
       type: "E-commerce",
       githubUrl: "https://github.com",
       liveUrl: "https://demo.com",
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
+      client: {
+        name: "Sophie Laurent",
+        company: "EcoVert Marketplace",
+        testimonial: "Le système de recommandations IA a transformé notre business. Nos clients trouvent exactement ce qu'ils cherchent et notre taux de conversion a explosé.",
+        rating: 5
+      },
+      caseStudy: {
+        challenge: "EcoVert Marketplace voulait se différencier dans le secteur e-commerce saturé en se positionnant sur l'écologie. Le défi était de créer une expérience d'achat engageante tout en sensibilisant les consommateurs à l'impact environnemental de leurs achats. Le taux de conversion était faible (2%) et les clients avaient du mal à découvrir des produits pertinents.",
+        solution: "Développement d'une marketplace avec un système de recommandations IA basé sur les préférences écologiques, un calculateur d'empreinte carbone en temps réel, et un programme de fidélité récompensant les achats responsables. Optimisation de la logistique pour réduire l'impact environnemental.",
+        implementation: "Vue.js pour une interface utilisateur moderne, Django REST Framework pour l'API, PostgreSQL pour les données relationnelles, algorithmes de machine learning pour les recommandations, et Docker pour le déploiement. Intégration d'APIs de calcul carbone et de solutions de livraison verte.",
+        results: [
+          "Augmentation de 120% du taux de conversion",
+          "Croissance de 200% du panier moyen",
+          "Réduction de 30% de l'empreinte carbone logistique",
+          "Fidélisation de 85% des clients",
+          "Expansion à 5 nouveaux pays"
+        ],
+        metrics: [
+          { name: "Taux de conversion", value: "4.4%", description: "Vs 2% initialement" },
+          { name: "Panier moyen", value: "89€", description: "Augmentation de 200%" },
+          { name: "Score satisfaction", value: "4.8/5", description: "Avis clients moyens" }
+        ],
+        lessons: [
+          "L'IA de recommandation doit être transparente pour gagner la confiance",
+          "Les consommateurs sont prêts à payer plus pour des produits écologiques",
+          "La gamification de l'écologie augmente l'engagement",
+          "La logistique verte est un avantage concurrentiel majeur"
+        ]
+      }
     }
   ];
 
@@ -172,6 +269,15 @@ const Projects = () => {
                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9D4EDD] rounded-full hover:bg-[#7B2CBF] transition-colors">
                           <Github className="w-6 h-6 text-white" />
                         </a>
+                        <button 
+                          onClick={() => {
+                            setSelectedProject(project);
+                            setIsModalOpen(true);
+                          }}
+                          className="p-3 bg-green-600 rounded-full hover:bg-green-700 transition-colors"
+                        >
+                          <FileText className="w-6 h-6 text-white" />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -238,6 +344,20 @@ const Projects = () => {
                     <h4 className="text-sm font-semibold mb-2 text-[#00F5FF]">Résultats obtenus</h4>
                     <p className="text-white font-medium">{project.results}</p>
                   </div>
+
+                  {/* Bouton étude de cas */}
+                  <div className="pt-4">
+                    <button 
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setIsModalOpen(true);
+                      }}
+                      className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg text-white font-medium hover:shadow-lg transition-all"
+                    >
+                      <Eye className="w-5 h-5" />
+                      <span>Voir l'étude de cas</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -264,6 +384,16 @@ const Projects = () => {
           </div>
         </div>
       </div>
+
+      {/* Project Modal */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedProject(null);
+        }}
+      />
     </section>
   );
 };
