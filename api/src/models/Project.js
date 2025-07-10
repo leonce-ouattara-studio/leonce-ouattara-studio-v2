@@ -18,26 +18,44 @@ const projectSchema = new mongoose.Schema({
     trim: true,
     maxlength: [1000, 'La description ne peut pas dépasser 1000 caractères']
   },
+  content: {
+    type: String,
+    required: [true, 'Le contenu détaillé est requis']
+  },
   category: {
     type: String,
     required: [true, 'La catégorie est requise'],
     enum: {
-      values: ['web', 'mobile', 'ecommerce', 'api', 'other'],
+      values: ['web', 'mobile', 'ecommerce', 'api', 'desktop', 'other'],
       message: 'Catégorie invalide'
     }
   },
   technologies: [{
-    type: String,
-    required: true,
-    trim: true
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    category: {
+      type: String,
+      enum: ['frontend', 'backend', 'database', 'devops', 'mobile', 'other'],
+      default: 'other'
+    },
+    version: String,
+    icon: String
   }],
   status: {
     type: String,
     enum: {
-      values: ['planning', 'development', 'testing', 'completed', 'maintenance'],
+      values: ['planning', 'development', 'testing', 'completed', 'maintenance', 'archived'],
       message: 'Statut invalide'
     },
     default: 'planning'
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high', 'urgent'],
+    default: 'medium'
   },
   startDate: {
     type: Date,
@@ -52,14 +70,25 @@ const projectSchema = new mongoose.Schema({
       message: 'La date de fin doit être postérieure à la date de début'
     }
   },
-  clientName: {
-    type: String,
-    trim: true,
-    maxlength: [100, 'Le nom du client ne peut pas dépasser 100 caractères']
+  client: {
+    name: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'Le nom du client ne peut pas dépasser 100 caractères']
+    },
+    company: String,
+    email: String,
+    website: String
   },
   budget: {
-    type: Number,
-    min: [0, 'Le budget ne peut pas être négatif']
+    amount: {
+      type: Number,
+      min: [0, 'Le budget ne peut pas être négatif']
+    },
+    currency: {
+      type: String,
+      default: 'EUR'
+    }
   },
   featured: {
     type: Boolean,
@@ -74,54 +103,97 @@ const projectSchema = new mongoose.Schema({
       type: String,
       default: ''
     },
+    caption: String,
     isPrimary: {
+      type: Boolean,
+      default: false
+    },
+    order: {
+      type: Number,
+      default: 0
+    }
+  }],
+  links: {
+    github: {
+      type: String,
+      validate: {
+        validator: function(v) {
+          return !v || /^https?:\/\/.+/.test(v);
+        },
+        message: 'URL GitHub invalide'
+      }
+    },
+    live: {
+      type: String,
+      validate: {
+        validator: function(v) {
+          return !v || /^https?:\/\/.+/.test(v);
+        },
+        message: 'URL live invalide'
+      }
+    },
+    demo: String,
+    documentation: String
+  },
+  features: [{
+    title: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    description: String,
+    implemented: {
       type: Boolean,
       default: false
     }
   }],
-  githubUrl: {
-    type: String,
-    validate: {
-      validator: function(v) {
-        return !v || /^https?:\/\/.+/.test(v);
-      },
-      message: 'URL GitHub invalide'
-    }
-  },
-  liveUrl: {
-    type: String,
-    validate: {
-      validator: function(v) {
-        return !v || /^https?:\/\/.+/.test(v);
-      },
-      message: 'URL live invalide'
-    }
-  },
-  features: [{
-    type: String,
-    trim: true
-  }],
   challenges: [{
-    type: String,
-    trim: true
+    title: String,
+    description: String,
+    solution: String
   }],
   results: {
-    type: String,
-    trim: true
+    metrics: [{
+      name: String,
+      value: String,
+      description: String
+    }],
+    summary: String,
+    impact: String
   },
   testimonial: {
     content: String,
     author: String,
     position: String,
-    company: String
+    company: String,
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5
+    }
   },
-  views: {
-    type: Number,
-    default: 0
+  seo: {
+    metaTitle: String,
+    metaDescription: String,
+    keywords: [String]
   },
-  likes: {
-    type: Number,
-    default: 0
+  analytics: {
+    views: {
+      type: Number,
+      default: 0
+    },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    shares: {
+      type: Number,
+      default: 0
+    },
+    downloads: {
+      type: Number,
+      default: 0
+    }
   },
   isPublished: {
     type: Boolean,
@@ -132,7 +204,16 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  tags: [String],
+  collaborators: [{
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    },
+    role: String,
+    contribution: String
+  }]
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -146,7 +227,8 @@ projectSchema.index({ status: 1 });
 projectSchema.index({ featured: 1 });
 projectSchema.index({ isPublished: 1 });
 projectSchema.index({ createdAt: -1 });
-projectSchema.index({ views: -1 });
+projectSchema.index({ 'analytics.views': -1 });
+projectSchema.index({ tags: 1 });
 
 // Virtual pour la durée du projet
 projectSchema.virtual('duration').get(function() {
@@ -190,18 +272,18 @@ projectSchema.pre('save', function(next) {
 
 // Méthode pour incrémenter les vues
 projectSchema.methods.incrementViews = function() {
-  return this.updateOne({ $inc: { views: 1 } });
+  return this.updateOne({ $inc: { 'analytics.views': 1 } });
 };
 
 // Méthode pour incrémenter les likes
 projectSchema.methods.incrementLikes = function() {
-  return this.updateOne({ $inc: { likes: 1 } });
+  return this.updateOne({ $inc: { 'analytics.likes': 1 } });
 };
 
 // Méthode statique pour obtenir les projets populaires
 projectSchema.statics.getPopular = function(limit = 5) {
   return this.find({ isPublished: true })
-    .sort({ views: -1, likes: -1 })
+    .sort({ 'analytics.views': -1, 'analytics.likes': -1 })
     .limit(limit)
     .populate('author', 'firstName lastName');
 };

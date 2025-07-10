@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -61,7 +62,23 @@ const userSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     }
-  }]
+  }],
+  preferences: {
+    language: {
+      type: String,
+      default: 'fr'
+    },
+    notifications: {
+      email: {
+        type: Boolean,
+        default: true
+      },
+      newsletter: {
+        type: Boolean,
+        default: false
+      }
+    }
+  }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
@@ -85,13 +102,10 @@ userSchema.virtual('isLocked').get(function() {
 
 // Middleware pre-save pour hasher le mot de passe
 userSchema.pre('save', async function(next) {
-  // Ne hasher que si le mot de passe a été modifié
   if (!this.isModified('password')) return next();
 
-  // Hasher le mot de passe avec un coût de 12
   this.password = await bcrypt.hash(this.password, 12);
 
-  // Mettre à jour passwordChangedAt
   if (!this.isNew) {
     this.passwordChangedAt = Date.now() - 1000;
   }
@@ -120,7 +134,6 @@ userSchema.methods.signRefreshToken = function() {
 
 // Méthode pour incrémenter les tentatives de connexion
 userSchema.methods.incLoginAttempts = function() {
-  // Si nous avons une date de verrouillage précédente et qu'elle est expirée, redémarrer à 1
   if (this.lockUntil && this.lockUntil < Date.now()) {
     return this.updateOne({
       $unset: { lockUntil: 1 },
@@ -130,9 +143,8 @@ userSchema.methods.incLoginAttempts = function() {
   
   const updates = { $inc: { loginAttempts: 1 } };
   
-  // Si nous atteignons le maximum d'essais et qu'il n'y a pas de verrouillage, verrouiller le compte
   if (this.loginAttempts + 1 >= 5 && !this.isLocked) {
-    updates.$set = { lockUntil: Date.now() + 2 * 60 * 60 * 1000 }; // 2 heures
+    updates.$set = { lockUntil: Date.now() + 2 * 60 * 60 * 1000 };
   }
   
   return this.updateOne(updates);
@@ -147,14 +159,14 @@ userSchema.methods.resetLoginAttempts = function() {
 
 // Méthode pour créer un token de réinitialisation de mot de passe
 userSchema.methods.createPasswordResetToken = function() {
-  const resetToken = require('crypto').randomBytes(32).toString('hex');
+  const resetToken = crypto.randomBytes(32).toString('hex');
   
-  this.passwordResetToken = require('crypto')
+  this.passwordResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
     
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   
   return resetToken;
 };
