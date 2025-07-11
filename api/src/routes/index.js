@@ -1,12 +1,20 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
 const projectRoutes = require('./projectRoutes');
+const contactRoutes = require('./contactRoutes');
+const newsletterRoutes = require('./newsletterRoutes');
+const blogRoutes = require('./blogRoutes');
+const appointmentRoutes = require('./appointmentRoutes');
 
 const router = express.Router();
 
 // Routes principales
 router.use('/auth', authRoutes);
 router.use('/projects', projectRoutes);
+router.use('/contact', contactRoutes);
+router.use('/newsletter', newsletterRoutes);
+router.use('/blog', blogRoutes);
+router.use('/appointments', appointmentRoutes);
 
 // Route de santé de l'API
 router.get('/health', (req, res) => {
@@ -28,6 +36,10 @@ router.get('/', (req, res) => {
     endpoints: {
       auth: '/api/v1/auth',
       projects: '/api/v1/projects',
+      contact: '/api/v1/contact',
+      newsletter: '/api/v1/newsletter',
+      blog: '/api/v1/blog',
+      appointments: '/api/v1/appointments',
       health: '/api/v1/health'
     }
   });
