@@ -12,6 +12,8 @@ const { globalErrorHandler, notFound } = require('./middleware/error/errorHandle
 
 // Importation des routes
 const routes = require('./routes');
+const adminRoutes = require('./routes/adminRoutes');
+const { sessionMiddleware, cleanupSessions } = require('./middleware/session');
 
 // Importation du logger
 const logger = require('./config/logger');
@@ -43,6 +45,10 @@ app.use(generalLimiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Middleware de session
+app.use(sessionMiddleware);
+app.use(cleanupSessions);
+
 // Middleware de sécurité pour les données
 app.use(mongoSanitize);
 app.use(xssClean);
@@ -68,6 +74,7 @@ app.use((req, res, next) => {
 
 // Routes principales
 app.use(`/api/${process.env.API_VERSION || 'v1'}`, routes);
+app.use(`/api/${process.env.API_VERSION || 'v1'}/admin`, adminRoutes);
 
 // Route de base
 app.get('/', (req, res) => {

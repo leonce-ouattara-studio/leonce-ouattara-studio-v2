@@ -290,6 +290,118 @@ const refreshToken = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res, 'Token rafraîchi avec succès');
 });
 
+// @desc    Vérifier le statut d'authentification
+// @route   GET /api/v1/auth/status
+// @access  Public
+const checkAuthStatus = catchAsync(async (req, res, next) => {
+  let isAuthenticated = false;
+  let user = null;
+
+  try {
+    let token;
+    
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies && req.cookies.token) {
+      token = req.cookies.token;
+    }
+
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      user = await User.findById(decoded.id).select('-password');
+      
+      if (user && user.isActive) {
+        isAuthenticated = true;
+      }
+    }
+  } catch (error) {
+    // Token invalide ou expiré
+    isAuthenticated = false;
+    user = null;
+  }
+
+  res.status(200).json({
+    success: true,
+    isAuthenticated,
+    user
+  });
+});
+
+// @desc    Obtenir tous les utilisateurs (Admin seulement)
+// @route   GET /api/v1/auth/users
+// @access  Private (Admin)
+const getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find().select('-password -refreshTokens');
+
+  res.status(200).json({
+    success: true,
+    count: users.length,
+    data: {
+      users
+    }
+  });
+});
+
+// @desc    Obtenir un utilisateur par ID (Admin seulement)
+// @route   GET /api/v1/auth/users/:id
+// @access  Private (Admin)
+const getUserById = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id).select('-password -refreshTokens');
+
+  if (!user) {
+    return next(new AppError('Utilisateur non trouvé', 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      user
+    }
+  });
+});
+
+// @desc    Mettre à jour un utilisateur (Admin seulement)
+// @route   PUT /api/v1/auth/users/:id
+// @access  Private (Admin)
+const updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  }).select('-password -refreshTokens');
+
+  if (!user) {
+    return next(new AppError('Utilisateur non trouvé', 404));
+  }
+
+  logger.info(`User updated by admin: ${user.email}`);
+
+  res.status(200).json({
+    success: true,
+    message: 'Utilisateur mis à jour avec succès',
+    data: {
+      user
+    }
+  });
+});
+
+// @desc    Supprimer un utilisateur (Admin seulement)
+// @route   DELETE /api/v1/auth/users/:id
+// @access  Private (Admin)
+const deleteUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return next(new AppError('Utilisateur non trouvé', 404));
+  }
+
+  logger.info(`User deleted by admin: ${user.email}`);
+
+  res.status(204).json({
+    success: true,
+    message: 'Utilisateur supprimé avec succès'
+  });
+});
+
 module.exports = {
   register,
   login,
@@ -299,5 +411,10 @@ module.exports = {
   changePassword,
   forgotPassword,
   resetPassword,
-  refreshToken
+  refreshToken,
+  checkAuthStatus,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser
 };

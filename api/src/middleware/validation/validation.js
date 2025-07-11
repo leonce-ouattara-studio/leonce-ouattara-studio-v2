@@ -113,6 +113,26 @@ const authSchemas = {
       .messages({
         'any.only': 'Les mots de passe ne correspondent pas'
       })
+  }),
+
+  updateProfile: Joi.object({
+    firstName: Joi.string().trim().min(2).max(50),
+    lastName: Joi.string().trim().min(2).max(50),
+    email: Joi.string().email(),
+    avatar: Joi.string().uri()
+  }).min(1),
+
+  changePassword: Joi.object({
+    currentPassword: Joi.string().required()
+      .messages({
+        'any.required': 'Mot de passe actuel requis'
+      }),
+    newPassword: commonSchemas.password,
+    confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required()
+      .messages({
+        'any.only': 'Les mots de passe ne correspondent pas',
+        'any.required': 'Confirmation du nouveau mot de passe requise'
+      })
   })
 };
 
