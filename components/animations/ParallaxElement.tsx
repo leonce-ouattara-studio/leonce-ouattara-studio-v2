@@ -100,4 +100,3 @@ export const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
   );
 };
 
-export default ParallaxElement;

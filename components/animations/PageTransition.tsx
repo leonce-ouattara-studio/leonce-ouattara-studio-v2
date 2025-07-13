@@ -8,7 +8,7 @@ interface PageTransitionProps {
   className?: string;
 }
 
-export const PageTransition: React.FC<PageTransitionProps> = ({
+const PageTransition: React.FC<PageTransitionProps> = ({
   children,
   className = ''
 }) => {
@@ -60,7 +60,7 @@ interface RouteTransitionProps {
   variant?: 'slide' | 'fade' | 'scale' | 'rotate';
 }
 
-export const RouteTransition: React.FC<RouteTransitionProps> = ({
+const RouteTransition: React.FC<RouteTransitionProps> = ({
   children,
   variant = 'slide'
 }) => {
@@ -124,4 +124,3 @@ export const RouteTransition: React.FC<RouteTransitionProps> = ({
   );
 };
 
-export default PageTransition;

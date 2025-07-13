@@ -21,7 +21,7 @@ interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement
   maxLength?: number;
 }
 
-export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({
+const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({
   label,
   error,
   errors = [],

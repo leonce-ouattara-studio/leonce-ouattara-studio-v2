@@ -24,7 +24,7 @@ interface FormSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElem
   hint?: string;
 }
 
-export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
+const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
   label,
   error,
   errors = [],

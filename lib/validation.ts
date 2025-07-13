@@ -25,7 +25,7 @@ export interface FormField {
 }
 
 // Messages d'erreur par défaut
-export const defaultErrorMessages = {
+const defaultErrorMessages = {
   required: 'Ce champ est obligatoire',
   minLength: (min: number) => `Minimum ${min} caractères requis`,
   maxLength: (max: number) => `Maximum ${max} caractères autorisés`,
@@ -36,7 +36,7 @@ export const defaultErrorMessages = {
 };
 
 // Expressions régulières utiles
-export const patterns = {
+const patterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   phone: /^(?:\+33|0)[1-9](?:[0-9]{8})$/,
   url: /^https?:\/\/.+\..+/,

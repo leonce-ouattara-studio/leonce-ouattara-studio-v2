@@ -113,4 +113,3 @@ export const ScrollTriggeredList: React.FC<ScrollTriggeredListProps> = ({
   );
 };
 
-export default ScrollTriggeredAnimation;

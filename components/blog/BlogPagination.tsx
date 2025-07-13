@@ -11,7 +11,7 @@ interface BlogPaginationProps {
   className?: string;
 }
 
-export const BlogPagination: React.FC<BlogPaginationProps> = ({
+const BlogPagination: React.FC<BlogPaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,

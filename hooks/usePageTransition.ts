@@ -39,4 +39,3 @@ export const usePageTransition = (options: UsePageTransitionOptions = {}) => {
   };
 };
 
-export default usePageTransition;

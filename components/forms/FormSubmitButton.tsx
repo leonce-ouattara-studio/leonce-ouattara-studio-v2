@@ -18,7 +18,7 @@ interface FormSubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   pulse?: boolean;
 }
 
-export const FormSubmitButton: React.FC<FormSubmitButtonProps> = ({
+const FormSubmitButton: React.FC<FormSubmitButtonProps> = ({
   children,
   loading = false,
   success = false,

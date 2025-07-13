@@ -16,7 +16,7 @@ interface FormCheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   loading?: boolean;
 }
 
-export const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(({
+const FormCheckbox = forwardRef<HTMLInputElement, FormCheckboxProps>(({
   label,
   description,
   error,

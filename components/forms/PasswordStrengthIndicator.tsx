@@ -12,7 +12,7 @@ interface PasswordStrengthIndicatorProps {
   compact?: boolean;
 }
 
-export const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
+const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
   password,
   className = '',
   showSuggestions = true,

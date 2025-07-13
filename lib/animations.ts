@@ -81,7 +81,7 @@ export const createStaggeredAnimation = (
   delay: baseDelay + (index * staggerDelay)
 });
 
-export const createParallaxTransform = (
+const createParallaxTransform = (
   scrollY: number,
   speed: number = 0.5,
   direction: 'up' | 'down' | 'left' | 'right' = 'up'
@@ -103,7 +103,7 @@ export const createParallaxTransform = (
 };
 
 // Easing functions personnalisées
-export const easingFunctions = {
+const easingFunctions = {
   easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
   easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
   easeIn: 'cubic-bezier(0.4, 0, 1, 1)',

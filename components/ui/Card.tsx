@@ -92,5 +92,4 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({
 
 Card.displayName = "Card";
 
-export { Card };
-export type { CardProps };
+export { Card };;

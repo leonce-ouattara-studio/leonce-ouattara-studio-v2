@@ -222,4 +222,3 @@ export const MicroInteraction: React.FC<MicroInteractionProps> = ({
   );
 };
 
-export default HoverEffect;

@@ -27,7 +27,7 @@ interface FormState {
   isDirty: boolean;
 }
 
-export const useForm = (config: FormConfig) => {
+const useForm = (config: FormConfig) => {
   const initialValues = Object.entries(config.fields).reduce((acc, [name, field]) => {
     acc[name] = field.initialValue || '';
     return acc;

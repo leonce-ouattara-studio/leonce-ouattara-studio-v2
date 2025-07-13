@@ -45,7 +45,7 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose }) => {
+const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';

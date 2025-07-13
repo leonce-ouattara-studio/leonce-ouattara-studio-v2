@@ -96,4 +96,3 @@ export const useParallax = (options: UseParallaxOptions = {}) => {
   };
 };
 
-export default useParallax;

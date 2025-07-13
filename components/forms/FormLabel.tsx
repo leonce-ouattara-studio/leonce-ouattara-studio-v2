@@ -12,7 +12,7 @@ interface FormLabelProps {
   success?: boolean;
 }
 
-export const FormLabel: React.FC<FormLabelProps> = ({
+const FormLabel: React.FC<FormLabelProps> = ({
   children,
   htmlFor,
   required = false,

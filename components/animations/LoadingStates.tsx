@@ -190,4 +190,3 @@ export const PageLoading: React.FC<PageLoadingProps> = ({
   }
 };
 
-export default LoadingState;

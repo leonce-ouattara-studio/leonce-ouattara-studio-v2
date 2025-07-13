@@ -31,7 +31,7 @@ interface BlogModalProps {
   onClose: () => void;
 }
 
-export const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) => {
+const BlogModal: React.FC<BlogModalProps> = ({ post, isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';

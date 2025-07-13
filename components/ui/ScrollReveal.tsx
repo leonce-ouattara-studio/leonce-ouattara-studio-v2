@@ -282,16 +282,5 @@ const useInView = (threshold = 0.1, triggerOnce = true) => {
   return { ref, isInView };
 };
 
-export { 
-  ScrollReveal, 
-  ScrollRevealList, 
-  ScrollRevealText, 
-  useScrollRevealStagger, 
-  useInView 
-};
-
-export type { 
-  ScrollRevealProps, 
-  ScrollRevealListProps, 
-  ScrollRevealTextProps 
-};
+;
+;

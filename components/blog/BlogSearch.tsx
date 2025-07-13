@@ -17,7 +17,7 @@ interface BlogSearchProps {
   tags: string[];
 }
 
-export const BlogSearch: React.FC<BlogSearchProps> = ({
+const BlogSearch: React.FC<BlogSearchProps> = ({
   searchTerm,
   onSearchChange,
   selectedCategory,

@@ -11,7 +11,7 @@ interface FormFieldProps {
   disabled?: boolean;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({
+const FormField: React.FC<FormFieldProps> = ({
   children,
   className = '',
   error = false,

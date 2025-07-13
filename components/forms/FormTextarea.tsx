@@ -19,7 +19,7 @@ interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEle
   autoResize?: boolean;
 }
 
-export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(({
+const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(({
   label,
   error,
   errors = [],

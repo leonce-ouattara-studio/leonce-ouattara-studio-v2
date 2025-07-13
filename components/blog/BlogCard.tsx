@@ -32,7 +32,7 @@ interface BlogCardProps {
   className?: string;
 }
 
-export const BlogCard: React.FC<BlogCardProps> = ({
+const BlogCard: React.FC<BlogCardProps> = ({
   post,
   onClick,
   variant = 'default',
